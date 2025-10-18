@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para mi Princesa Juanita 💖</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #ffccd5, #ffe6f0, #ffd1e3);
+    color: #3b0a45;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-size: 2.6em;
+    margin-top: 40px;
+    color: #5a0e3d;
+  }
+
+  p {
+    font-size: 1.2em;
+    max-width: 700px;
+    margin: 20px auto;
+    line-height: 1.6;
+  }
+
+  .btn {
+    background-color: #ff4081;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin: 15px;
+    transition: background 0.3s;
+  }
+  .btn:hover {
+    background-color: #d81b60;
+  }
+
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.7);
+  }
+
+  .modal-content {
+    background-color: #fff0f6;
+    margin: 8% auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    color: #4a0e2e;
+  }
+
+  .close {
+    position: absolute;
+    top: 10px; right: 20px;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: #d81b60;
+  }
+
+  img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255,105,180,0.5);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  img.visible {
+    opacity: 1;
+  }
+
+  /* Corazones */
+  .heart {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background-color: pink;
+    transform: rotate(45deg);
+    animation: float 5s infinite;
+  }
+  .heart::before, .heart::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: pink;
+    border-radius: 50%;
+  }
+  .heart::before { top: -10px; left: 0; }
+  .heart::after { left: -10px; top: 0; }
+
+  /* Flores */
+  .flower {
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle at 10px 10px, #ff69b4, #ff1493);
+    border-radius: 50%;
+    animation: bloom 7s linear infinite;
+  }
+  .flower::before, .flower::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle at 10px 10px, #ffb6c1, #ff69b4);
+    border-radius: 50%;
+  }
+  .flower::before { transform: rotate(45deg); }
+  .flower::after { transform: rotate(90deg); }
+
+  @keyframes bloom {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-800px) rotate(360deg); opacity: 0; }
+  }
+
+  /* Animaciones */
+  @keyframes float {
+    0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+    100% { transform: translateY(-800px) rotate(45deg); opacity: 0; }
+  }
+
+  /* Carta */
+  .carta {
+    font-size: 1.1em;
+    text-align: left;
+    white-space: pre-line;
+    color: #4a0e2e;
+    background: #ffe6f0;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    line-height: 1.8;
+  }
+
+  /* Botón música */
+  #btnMusica {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff80ab;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px; height: 60px;
+    font-size: 1.5em;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+  }
+  #btnMusica:hover { transform: scale(1.1); }
+
+</style>
+</head>
+<body>
+  <h1>💞 Para mi Princesa Juanita 💞</h1>
+  <p>Te dedico esta página con todo mi amor, porque tú eres mi razón para sonreír cada día.  
+  Cada latido de mi corazón suena a tu nombre. 💓</p>
+
+  <button class="btn" id="verFotos">📸 Ver nuestras fotos</button>
+  <button class="btn" id="verCarta">💌 Leer mi carta</button>
+  <button class="btn" id="flores">🌷 Enviar flores</button>
+
+  <!-- Botón Música -->
+  <button id="btnMusica">🎵</button>
+  <audio id="musica" src="musica.mp3" loop></audio>
+
+  <!-- Modal Fotos -->
+  <div id="modalFotos" class="modal">
+    <div class="modal-content">
+      <span class="close" id="cerrarFotos">&times;</span>
+      <img id="imagen" src="foto1.jpg" alt="Foto de nosotros" class="visible">
+    </div>
+  </div>
+
+  <!-- Modal Carta -->
+  <div id="modalCarta" class="modal">
+    <div class="modal-content">
+      <span class="close" id="cerrarCarta">&times;</span>
+      <div class="carta" id="contenidoCarta">
+        💖 Mi amor Juanita 💖  
+        Desde el día en que llegaste a mi vida, todo cambió para mejor.  
+        Tu sonrisa ilumina mis días y tu abrazo es mi lugar favorito en el mundo.  
+        Cada momento contigo es un regalo, y cada beso una promesa que quiero cumplir.  
+
+        Gracias por ser mi razón, mi paz y mi alegría.  
+        Eres mi sueño hecho realidad, y te amo con todo lo que soy. 💕
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Corazones flotantes
+    function crearCorazon() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(crearCorazon, 400);
+
+    // Flores flotantes
+    document.getElementById("flores").onclick = () => {
+      for (let i = 0; i < 15; i++) {
+        const flower = document.createElement("div");
+        flower.className = "flower";
+        flower.style.left = Math.random() * 100 + "vw";
+        flower.style.animationDuration = (4 + Math.random() * 4) + "s";
+        document.body.appendChild(flower);
+        setTimeout(() => flower.remove(), 7000);
+      }
+    };
+
+    // Fotos automáticas
+    const fotos = ["foto1.jpg", "foto2.jpg", "foto3.jpg"];
+    let index = 0;
+    const modalFotos = document.getElementById("modalFotos");
+    const imagen = document.getElementById("imagen");
+    let intervaloFotos;
+
+    document.getElementById("verFotos").onclick = () => {
+      modalFotos.style.display = "block";
+      cambiarFoto();
+      intervaloFotos = setInterval(cambiarFoto, 3000);
+    };
+    document.getElementById("cerrarFotos").onclick = () => {
+      modalFotos.style.display = "none";
+      clearInterval(intervaloFotos);
+    };
+
+    function cambiarFoto() {
+      imagen.classList.remove("visible");
+      setTimeout(() => {
+        index = (index + 1) % fotos.length;
+        imagen.src = fotos[index];
+        imagen.classList.add("visible");
+      }, 1000);
+    }
+
+    // Carta
+    const modalCarta = document.getElementById("modalCarta");
+    document.getElementById("verCarta").onclick = () => modalCarta.style.display = "block";
+    document.getElementById("cerrarCarta").onclick = () => modalCarta.style.display = "none";
+
+    // Música
+    const musica = document.getElementById("musica");
+    const btnMusica = document.getElementById("btnMusica");
+    let tocando = false;
+    btnMusica.onclick = () => {
+      if (!tocando) {
+        musica.play();
+        tocando = true;
+        btnMusica.textContent = "⏸️";
+      } else {
+        musica.pause();
+        tocando = false;
+        btnMusica.textContent = "🎵";
+      }
+    };
+  </script>
+</body>
+</html>
